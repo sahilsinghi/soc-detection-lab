@@ -165,13 +165,6 @@ Sysmon EventCode breakdown and sourcetype distribution in the `soc-lab` index.
 
 ---
 
-## 📹 Demo
-
-> 3-minute walkthrough: Attack → Log → Alert  
-> [Link to be added after recording]
-
----
-
 ## 📝 Resume Bullet
 
 > Built end-to-end SOC detection lab with Splunk + Sysmon-instrumented Windows endpoints; authored 30+ detection rules mapped to MITRE ATT&CK and validated each via Atomic Red Team simulations, achieving 75% coverage across 12 tactics and surfacing 3 false-positive scenarios resolved through rule tuning.
