@@ -144,7 +144,7 @@ See [`docs/one-detection-walkthrough.md`](docs/one-detection-walkthrough.md) for
 ### Splunk Coverage Dashboard
 Live dashboard showing 94K+ indexed events and detection coverage across 12 MITRE ATT&CK tactics.
 
-![Splunk Coverage Dashboard](screenshots/Screenshot%202026-05-26%20at%201.00.37%E2%80%AFPM.png)
+![Splunk Coverage Dashboard](screenshots/Screenshot%202026-05-26%20at%201.12.56%E2%80%AFPM.png)
 
 ### MITRE ATT&CK Navigator Layer
 Heatmap of techniques covered by the 32 detection rules deployed in this lab.
@@ -154,7 +154,7 @@ Heatmap of techniques covered by the 32 detection rules deployed in this lab.
 ### T1547.001 Registry Run Key — Attack Confirmed
 End-to-end validation: Atomic Red Team attack → Sysmon EventCode 13 → Splunk indexed event.
 
-![T1547.001 Attack Confirmed](screenshots/Screenshot%202026-05-26%20at%201.12.56%E2%80%AFPM.png)
+![T1547.001 Attack Confirmed](screenshots/Screenshot%202026-05-26%20at%201.00.37%E2%80%AFPM.png)
 
 ### Splunk Search Results
 Sysmon EventCode breakdown and sourcetype distribution in the `soc-lab` index.
