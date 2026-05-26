@@ -1,0 +1,119 @@
+<dashboard version="1.1" theme="dark">
+  <label>SOC Detection Lab — ATT&amp;CK Coverage Dashboard</label>
+  <description>MITRE ATT&CK detection coverage across 12 tactics | Sahil Singhi SOC Portfolio</description>
+
+  <row>
+    <panel>
+      <single>
+        <title>Total Detection Rules</title>
+        <search>
+          <query>| makeresults | eval count=32 | table count</query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="useColors">1</option>
+        <option name="rangeColors">["0x53a051","0x53a051"]</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Tactics Covered</title>
+        <search>
+          <query>| makeresults | eval count=12 | table count</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>Alerts Last 24h</title>
+        <search>
+          <query>index=main sourcetype=stash alert_name="DETECT*" earliest=-24h | stats count</query>
+        </search>
+        <option name="useColors">1</option>
+        <option name="colorBy">value</option>
+      </single>
+    </panel>
+    <panel>
+      <single>
+        <title>False Positives Documented</title>
+        <search>
+          <query>| makeresults | eval count=3 | table count</query>
+        </search>
+      </single>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <chart>
+        <title>Alerts by ATT&amp;CK Tactic (Last 30 Days)</title>
+        <search>
+          <query>index=main sourcetype=stash alert_name="DETECT*" earliest=-30d
+| rex field=alert_name "DETECT - (?&lt;technique_id&gt;T\d+\.\d+)"
+| lookup mitre_tactics.csv technique_id OUTPUT tactic
+| stats count by tactic
+| sort -count</query>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.axisTitleX.text">Tactic</option>
+        <option name="charting.axisTitleY.text">Alert Count</option>
+        <option name="charting.seriesColors">["0xe8193c"]</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Alert Volume Over Time (Last 30 Days)</title>
+        <search>
+          <query>index=main sourcetype=stash alert_name="DETECT*" earliest=-30d
+| timechart span=1d count by alert_name</query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <table>
+        <title>Top 10 Triggered Techniques</title>
+        <search>
+          <query>index=main sourcetype=stash alert_name="DETECT*" earliest=-30d
+| rex field=alert_name "DETECT - (?&lt;technique_id&gt;T\d+\.\d+)"
+| stats count as alert_count by technique_id, alert_name
+| sort -alert_count
+| head 10</query>
+        </search>
+        <option name="dataOverlayMode">heatmap</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Recent Alerts</title>
+        <search>
+          <query>index=main sourcetype=stash alert_name="DETECT*" earliest=-24h
+| table _time, alert_name, host, user
+| sort -_time
+| head 20</query>
+        </search>
+      </table>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <chart>
+        <title>Detection Coverage by Tactic</title>
+        <search>
+          <query>| makeresults
+| eval data="Initial Access:2,Execution:4,Persistence:4,Privilege Escalation:2,Defense Evasion:3,Credential Access:4,Discovery:3,Lateral Movement:3,Collection:2,Command and Control:2,Exfiltration:1,Impact:1"
+| makemv delim="," data
+| mvexpand data
+| rex field=data "(?&lt;tactic&gt;[^:]+):(?&lt;rules&gt;\d+)"
+| table tactic, rules</query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
+</dashboard>

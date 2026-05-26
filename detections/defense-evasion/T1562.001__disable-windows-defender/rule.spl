@@ -1,0 +1,9 @@
+index=main (sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" OR sourcetype="WinEventLog:Security")
+(
+  (EventCode=13 TargetObject="*\\Windows Defender\\*" Details="DWORD (0x00000000)")
+  OR (EventCode=1 process="*Set-MpPreference*" process="*DisableRealtimeMonitoring*")
+  OR (EventCode=1 process="*sc*" process="*WinDefend*" (process="*stop*" OR process="*disabled*"))
+)
+| eval mitre_technique="T1562.001", mitre_tactic="Defense Evasion", severity="high"
+| table _time, host, user, process, TargetObject, Details, mitre_technique, severity
+| sort -_time

@@ -1,0 +1,7 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1
+(ParentImage="*\\OUTLOOK.EXE" OR ParentImage="*\\thunderbird.exe")
+(process_name="cmd.exe" OR process_name="powershell.exe" OR process_name="wscript.exe" OR process_name="cscript.exe" OR process_name="mshta.exe")
+| eval mitre_technique="T1566.001", mitre_tactic="Initial Access", severity="critical"
+| table _time, host, user, ParentImage, process_name, process, mitre_technique, severity
+| sort -_time

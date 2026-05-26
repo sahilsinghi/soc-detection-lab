@@ -1,0 +1,31 @@
+# Splunk
+*.license
+splunk-*
+*.spl.bak
+
+# Credentials — NEVER commit real passwords
+.env
+secrets.txt
+credentials.txt
+*.key
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Screenshots with PII
+screenshots/private/
+
+# VM artifacts
+*.vmdk
+*.ova
+*.iso
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Logs
+*.log

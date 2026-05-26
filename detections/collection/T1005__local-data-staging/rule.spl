@@ -1,0 +1,7 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=11
+TargetFilename IN ("*\\Temp\\*.zip","*\\Temp\\*.rar","*\\Temp\\*.7z","*\\Public\\*.zip","*\\AppData\\*.zip")
+NOT (Image="*\\7z.exe" AND ParentImage="*\\explorer.exe")
+| eval mitre_technique="T1005", mitre_tactic="Collection", severity="medium"
+| table _time, host, user, Image, TargetFilename, mitre_technique, severity
+| sort -_time

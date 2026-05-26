@@ -1,0 +1,7 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1
+(process="*findstr*password*" OR process="*findstr*passwd*" OR process="*findstr*credential*"
+ OR process="*Select-String*password*" OR process="*grep*password*")
+| eval mitre_technique="T1552.001", mitre_tactic="Credential Access", severity="medium"
+| table _time, host, user, process, ParentImage, mitre_technique, severity
+| sort -_time

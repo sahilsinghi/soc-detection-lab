@@ -1,0 +1,7 @@
+index=main sourcetype="WinEventLog:Security" EventCode=4625
+| bucket _time span=5m
+| stats count by _time, host, TargetUserName, IpAddress, LogonType
+| where count > 10
+| eval mitre_technique="T1110.001", mitre_tactic="Credential Access", severity="high"
+| table _time, host, TargetUserName, IpAddress, LogonType, count, mitre_technique, severity
+| sort -count desc

@@ -1,0 +1,7 @@
+index=main sourcetype="WinEventLog:Security"
+EventCode=4624 LogonType=3
+AuthenticationPackageName="NTLM" WorkstationName!="-"
+NOT (TargetUserName="*$" OR TargetUserName="ANONYMOUS LOGON")
+| eval mitre_technique="T1550.002", mitre_tactic="Lateral Movement", severity="high"
+| table _time, host, TargetUserName, WorkstationName, IpAddress, LogonType, mitre_technique, severity
+| sort -_time

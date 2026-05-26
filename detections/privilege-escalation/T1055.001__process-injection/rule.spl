@@ -1,0 +1,6 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=8
+NOT (SourceImage="*\\svchost.exe" OR SourceImage="*\\MsMpEng.exe")
+| eval mitre_technique="T1055.001", mitre_tactic="Privilege Escalation/Defense Evasion", severity="high"
+| table _time, host, SourceImage, TargetImage, StartAddress, StartModule, mitre_technique, severity
+| sort -_time

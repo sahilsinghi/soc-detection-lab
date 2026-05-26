@@ -1,0 +1,33 @@
+technique_id,technique_name,tactic,atomic_test_id,atomic_test_name,detection_rule_file,splunk_search_name,severity
+T1059.001,PowerShell Encoded Command,Execution,T1059.001-1,PowerShell Encoded Command,execution/T1059.001__powershell-encoded-command/rule.spl,DETECT - T1059.001 PowerShell Encoded Command,High
+T1059.003,Suspicious CMD Execution,Execution,T1059.003-1,Cmd.exe Spawning Suspicious Process,execution/T1059.003__cmd-suspicious-execution/rule.spl,DETECT - T1059.003 CMD Suspicious Execution,Medium
+T1204.002,Malicious File Execution,Execution,T1204.002-1,OfficeMacro Spawns Process,execution/T1204.002__malicious-file-execution/rule.spl,DETECT - T1204.002 Office Macro Execution,Critical
+T1053.005,Scheduled Task Creation,Execution,T1053.005-1,Scheduled Task Creation via schtasks,execution/T1053.005__scheduled-task-creation/rule.spl,DETECT - T1053.005 Scheduled Task,High
+T1547.001,Registry Run Key Persistence,Persistence,T1547.001-1,Add Run Key to Registry,persistence/T1547.001__run-key-persistence/rule.spl,DETECT - T1547.001 Run Key Persistence,High
+T1136.001,Local Account Creation,Persistence,T1136.001-1,Create Local Account via net user,persistence/T1136.001__local-account-creation/rule.spl,DETECT - T1136.001 Local Account Created,Medium
+T1543.003,New Windows Service,Persistence,T1543.003-1,Create Service with sc.exe,persistence/T1543.003__service-creation/rule.spl,DETECT - T1543.003 New Service Created,High
+T1197,BITS Job Persistence,Persistence,T1197-1,BITS Download and Execute,persistence/T1197__bits-job-persistence/rule.spl,DETECT - T1197 BITS Job Abuse,Medium
+T1055.001,Process Injection,Privilege Escalation,T1055.001-1,RemoteThread Injection,privilege-escalation/T1055.001__process-injection/rule.spl,DETECT - T1055.001 Process Injection,High
+T1134.001,Token Impersonation,Privilege Escalation,T1134.001-1,Token Impersonation via SeImpersonatePrivilege,privilege-escalation/T1134.001__token-impersonation/rule.spl,DETECT - T1134.001 Token Impersonation,High
+T1562.001,Disable Windows Defender,Defense Evasion,T1562.001-1,Disable Windows Defender via PowerShell,defense-evasion/T1562.001__disable-windows-defender/rule.spl,DETECT - T1562.001 Defender Disabled,High
+T1070.004,File Deletion via CMD,Defense Evasion,T1070.004-1,Delete Files using DEL command,defense-evasion/T1070.004__file-deletion-via-cmd/rule.spl,DETECT - T1070.004 File Deletion,Medium
+T1218.011,Rundll32 LOLBaS,Defense Evasion,T1218.011-1,Rundll32 Execute Arbitrary DLL,defense-evasion/T1218.011__rundll32-lolbas/rule.spl,DETECT - T1218.011 Rundll32 Abuse,Medium
+T1003.001,LSASS Memory Dump,Credential Access,T1003.001-1,Dump LSASS Memory with ProcDump,credential-access/T1003.001__lsass-memory-dump/rule.spl,DETECT - T1003.001 LSASS Dump,Critical
+T1110.001,Password Brute Force,Credential Access,T1110.001-1,Brute Force Logon Attempts,credential-access/T1110.001__password-brute-force/rule.spl,DETECT - T1110.001 Brute Force,High
+T1555.003,Browser Credential Theft,Credential Access,T1555.003-1,Chrome SQLite Database Access,credential-access/T1555.003__browser-credential-theft/rule.spl,DETECT - T1555.003 Browser Cred Theft,High
+T1552.001,Credentials in Files,Credential Access,T1552.001-1,Find Password in Files via findstr,credential-access/T1552.001__credentials-in-files/rule.spl,DETECT - T1552.001 Creds in Files,Medium
+T1082,System Info Discovery,Discovery,T1082-1,System Info Discovery via systeminfo,discovery/T1082__system-info-discovery/rule.spl,DETECT - T1082 System Discovery,Low
+T1083,File Directory Discovery,Discovery,T1083-1,File and Directory Discovery via dir,discovery/T1083__file-directory-discovery/rule.spl,DETECT - T1083 Dir Discovery,Low
+T1087.001,Local Account Discovery,Discovery,T1087.001-1,Enumerate Local Accounts via net user,discovery/T1087.001__local-account-discovery/rule.spl,DETECT - T1087.001 Account Discovery,Low
+T1021.002,SMB Admin Share,Lateral Movement,T1021.002-1,Map Admin Share with net use,lateral-movement/T1021.002__smb-admin-share/rule.spl,DETECT - T1021.002 SMB Admin Share,High
+T1021.001,RDP Lateral Movement,Lateral Movement,T1021.001-1,RDP to Remote System,lateral-movement/T1021.001__rdp-lateral-movement/rule.spl,DETECT - T1021.001 RDP Lateral Movement,High
+T1550.002,Pass the Hash,Lateral Movement,T1550.002-1,NTLM Pass the Hash via Mimikatz,lateral-movement/T1550.002__pass-the-hash/rule.spl,DETECT - T1550.002 Pass the Hash,High
+T1005,Local Data Staging,Collection,T1005-1,Stage Data in Temp Directory,collection/T1005__local-data-staging/rule.spl,DETECT - T1005 Data Staging,Medium
+T1114.001,Local Email Collection,Collection,T1114.001-1,Copy PST File for Exfiltration,collection/T1114.001__local-email-collection/rule.spl,DETECT - T1114.001 Email Collection,High
+T1071.001,HTTP C2 Beacon,Command and Control,T1071.001-1,Simulate C2 Beacon via HTTP,command-and-control/T1071.001__http-c2-beacon/rule.spl,DETECT - T1071.001 HTTP C2 Beacon,Medium
+T1095,Non-Standard Protocol C2,Command and Control,T1095-1,C2 over Non-Standard Port,command-and-control/T1095__non-application-layer-protocol/rule.spl,DETECT - T1095 Non-Standard Protocol,Medium
+T1041,Exfiltration over C2,Exfiltration,T1041-1,Exfil Data over HTTP,exfiltration/T1041__exfil-over-c2-channel/rule.spl,DETECT - T1041 Exfiltration over C2,High
+T1486,Data Encrypted for Impact,Impact,T1486-1,Encrypt Files with Ransomware Simulation,impact/T1486__data-encrypted-for-impact/rule.spl,DETECT - T1486 Ransomware Activity,Critical
+T1566.001,Phishing Attachment,Initial Access,T1566.001-1,Outlook Spawns Malicious Process,initial-access/T1566.001__phishing-attachment/rule.spl,DETECT - T1566.001 Phishing Execution,Critical
+T1190,Exploit Public App,Initial Access,T1190-1,Web App Login Brute Force,initial-access/T1190__exploit-public-facing-app/rule.spl,DETECT - T1190 Public App Exploit,High
+T1543.003,Windows Service Creation,Persistence,T1543.003-2,Create Malicious Service via PowerShell,persistence/T1543.003__service-creation/rule.spl,DETECT - T1543.003 Malicious Service,High

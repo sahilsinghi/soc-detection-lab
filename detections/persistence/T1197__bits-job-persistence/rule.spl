@@ -1,0 +1,6 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1 process_name="bitsadmin.exe"
+(process="*/transfer*" OR process="*/addfile*" OR process="*/setnotifycmdline*")
+| eval mitre_technique="T1197", mitre_tactic="Persistence/Defense Evasion", severity="medium"
+| table _time, host, user, process, ParentImage, mitre_technique, severity
+| sort -_time

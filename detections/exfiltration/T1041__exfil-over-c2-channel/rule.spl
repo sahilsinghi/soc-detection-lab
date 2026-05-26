@@ -1,0 +1,9 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=3
+NOT (Image IN ("*\\chrome.exe","*\\firefox.exe","*\\OneDrive.exe","*\\svchost.exe"))
+| eval bytes_sent=tonumber(DestinationPort)
+| stats sum(bytes_sent) as total_bytes by host, Image, DestinationIp
+| where total_bytes > 10000000
+| eval mitre_technique="T1041", mitre_tactic="Exfiltration", severity="high"
+| table host, Image, DestinationIp, total_bytes, mitre_technique, severity
+| sort -total_bytes

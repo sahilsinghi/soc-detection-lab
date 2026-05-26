@@ -1,0 +1,5 @@
+index=main sourcetype="WinEventLog:Security" EventCode=4698
+NOT (SubjectUserName="SYSTEM" OR TaskName="*Microsoft*" OR TaskName="*Windows*")
+| eval mitre_technique="T1053.005", mitre_tactic="Execution/Persistence", severity="high"
+| table _time, host, SubjectUserName, TaskName, TaskContent, mitre_technique, severity
+| sort -_time

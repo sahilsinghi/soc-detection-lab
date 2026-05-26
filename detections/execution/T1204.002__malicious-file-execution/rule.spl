@@ -1,0 +1,7 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1
+(ParentImage="*\\winword.exe" OR ParentImage="*\\excel.exe" OR ParentImage="*\\outlook.exe" OR ParentImage="*\\powerpnt.exe")
+NOT (process_name="splwow64.exe" OR process_name="AcroRd32.exe")
+| eval mitre_technique="T1204.002", mitre_tactic="Execution", severity="critical"
+| table _time, host, user, ParentImage, process_name, process, mitre_technique, severity
+| sort -_time

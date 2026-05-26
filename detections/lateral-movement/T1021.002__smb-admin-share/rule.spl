@@ -1,0 +1,9 @@
+index=main sourcetype="WinEventLog:Security"
+EventCode=5140
+ShareName IN ("\\\\*\\ADMIN$", "\\\\*\\C$", "\\\\*\\IPC$")
+NOT (SubjectUserName="*$")
+| eval mitre_technique="T1021.002", mitre_tactic="Lateral Movement", severity="high"
+| stats count by _time, host, SubjectUserName, SubjectDomainName, IpAddress, ShareName
+| where count > 0
+| eval mitre_technique="T1021.002"
+| sort -_time

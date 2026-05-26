@@ -1,0 +1,6 @@
+index=main sourcetype="WinEventLog:Security"
+EventCode=4672 NOT (SubjectUserName="SYSTEM" OR SubjectUserName="*$")
+PrivilegeList="*SeImpersonatePrivilege*" OR PrivilegeList="*SeAssignPrimaryTokenPrivilege*"
+| eval mitre_technique="T1134.001", mitre_tactic="Privilege Escalation", severity="high"
+| table _time, host, SubjectUserName, PrivilegeList, mitre_technique, severity
+| sort -_time

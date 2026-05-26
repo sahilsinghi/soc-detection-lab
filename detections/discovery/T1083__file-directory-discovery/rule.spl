@@ -1,0 +1,8 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1
+(process_name="dir.exe" OR (process_name="cmd.exe" AND process="*dir *")
+ OR (process_name="powershell.exe" AND (process="*Get-ChildItem*" OR process="*ls *" OR process="*gci *")))
+(process="*C:\\Users\\*" OR process="*C:\\Program Files*" OR process="*C:\\Windows\\System32*")
+| eval mitre_technique="T1083", mitre_tactic="Discovery", severity="low"
+| table _time, host, user, process, ParentImage, mitre_technique, severity
+| sort -_time

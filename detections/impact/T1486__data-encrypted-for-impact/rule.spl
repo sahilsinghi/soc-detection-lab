@@ -1,0 +1,10 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=11
+| bucket _time span=10s
+| stats count by _time, host, Image
+| where count > 50
+| join host [search index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+  EventCode=11 (TargetFilename="*.locked" OR TargetFilename="*.encrypted" OR TargetFilename="*.crypto" OR TargetFilename="*DECRYPT*")]
+| eval mitre_technique="T1486", mitre_tactic="Impact", severity="critical"
+| table _time, host, Image, count, mitre_technique, severity
+| sort -_time

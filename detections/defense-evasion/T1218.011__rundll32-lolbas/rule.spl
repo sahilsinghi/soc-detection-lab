@@ -1,0 +1,6 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1 process_name="rundll32.exe"
+NOT (process="*shell32.dll*" OR process="*printui.dll*" OR process="*zipfldr.dll*")
+| eval mitre_technique="T1218.011", mitre_tactic="Defense Evasion", severity="medium"
+| table _time, host, user, process, ParentImage, mitre_technique, severity
+| sort -_time

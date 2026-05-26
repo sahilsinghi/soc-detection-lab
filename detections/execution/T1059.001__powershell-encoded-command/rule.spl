@@ -1,0 +1,10 @@
+| tstats `security_content_summariesonly` count min(_time) as firstTime max(_time) as lastTime
+  FROM datamodel=Endpoint.Processes
+  WHERE Processes.process_name=powershell.exe
+    AND (Processes.process=*-EncodedCommand* OR Processes.process=*-enc * OR Processes.process=*-ec *)
+  BY Processes.host, Processes.user, Processes.process, Processes.parent_process_name
+| rename Processes.* as *
+| eval mitre_technique="T1059.001", mitre_tactic="Execution"
+| eval severity="high"
+| table _time, host, user, parent_process_name, process, mitre_technique, severity
+| sort -_time

@@ -1,0 +1,6 @@
+index=main sourcetype="WinEventLog:Security" EventCode=4720
+NOT (SubjectUserName="*$" OR SubjectUserName="SYSTEM")
+| eval mitre_technique="T1136.001", mitre_tactic="Persistence", severity="medium"
+| rename TargetUserName as new_account, SubjectUserName as created_by
+| table _time, host, new_account, created_by, mitre_technique, severity
+| sort -_time

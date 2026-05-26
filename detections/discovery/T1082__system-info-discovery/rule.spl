@@ -1,0 +1,8 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1
+(process_name="systeminfo.exe" OR process_name="hostname.exe"
+ OR (process_name="wmic.exe" AND process="*os*") 
+ OR (process_name="reg.exe" AND process="*query*"))
+| eval mitre_technique="T1082", mitre_tactic="Discovery", severity="low"
+| table _time, host, user, process_name, process, ParentImage, mitre_technique, severity
+| sort -_time

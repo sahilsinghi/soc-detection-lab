@@ -1,0 +1,7 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1 process_name="cmd.exe"
+(process="*del /f*" OR process="*del /q*" OR process="*erase*" OR process="*cipher /w*")
+TargetFilename IN ("*.exe","*.ps1","*.bat","*.vbs","*.dll")
+| eval mitre_technique="T1070.004", mitre_tactic="Defense Evasion", severity="medium"
+| table _time, host, user, process, TargetFilename, mitre_technique, severity
+| sort -_time

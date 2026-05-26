@@ -1,0 +1,9 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1 process_name="cmd.exe"
+(process="*net user*" OR process="*net localgroup*" OR process="*whoami*"
+ OR process="*ipconfig*" OR process="*systeminfo*" OR process="*tasklist*"
+ OR process="*/c *powershell*")
+NOT (ParentImage="*\\explorer.exe" AND user!="SYSTEM")
+| eval mitre_technique="T1059.003", mitre_tactic="Execution", severity="medium"
+| table _time, host, user, ParentImage, process, mitre_technique, severity
+| sort -_time

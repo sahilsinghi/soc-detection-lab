@@ -1,0 +1,6 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=1
+(process="*net user*" OR process="*net localgroup*" OR process="*Get-LocalUser*" OR process="*wmic useraccount*")
+| eval mitre_technique="T1087.001", mitre_tactic="Discovery", severity="low"
+| table _time, host, user, process_name, process, ParentImage, mitre_technique, severity
+| sort -_time

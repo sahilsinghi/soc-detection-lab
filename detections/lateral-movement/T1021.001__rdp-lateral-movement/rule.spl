@@ -1,0 +1,6 @@
+index=main sourcetype="WinEventLog:Security"
+EventCode=4624 LogonType=10
+NOT (IpAddress="127.0.0.1" OR IpAddress="::1" OR IpAddress="-")
+| eval mitre_technique="T1021.001", mitre_tactic="Lateral Movement", severity="high"
+| table _time, host, TargetUserName, IpAddress, IpPort, mitre_technique, severity
+| sort -_time

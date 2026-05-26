@@ -1,0 +1,6 @@
+test_date,technique_id,technique_name,atomic_test_id,endpoint,executed_by,alert_fired,alert_time,latency_seconds,notes
+YYYY-MM-DD HH:MM,T1059.001,PowerShell Encoded Command,T1059.001-1,WIN10-ENDPOINT1,splunk-admin,YES,HH:MM:SS,45,Detection fired on first run
+YYYY-MM-DD HH:MM,T1003.001,LSASS Memory Dump,T1003.001-1,WIN10-ENDPOINT1,splunk-admin,YES,HH:MM:SS,32,ProcDump triggered Sysmon EID 10
+YYYY-MM-DD HH:MM,T1547.001,Registry Run Key,T1547.001-1,WIN10-ENDPOINT1,splunk-admin,YES,HH:MM:SS,28,Sysmon EID 13 captured registry write
+YYYY-MM-DD HH:MM,T1136.001,Local Account Creation,T1136.001-1,WIN10-ENDPOINT1,splunk-admin,YES,HH:MM:SS,15,Security EID 4720 captured immediately
+YYYY-MM-DD HH:MM,T1562.001,Disable Defender,T1562.001-1,WIN10-ENDPOINT1,splunk-admin,YES,HH:MM:SS,22,Both registry and PS method detected

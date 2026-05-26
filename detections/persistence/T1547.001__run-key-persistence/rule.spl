@@ -1,0 +1,9 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=13
+TargetObject IN ("*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\*",
+                 "*\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce\\*",
+                 "*\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run\\*")
+NOT (Image="*\\msiexec.exe" OR Image="*\\setup.exe")
+| eval mitre_technique="T1547.001", mitre_tactic="Persistence", severity="high"
+| table _time, host, user, Image, TargetObject, Details, mitre_technique, severity
+| sort -_time

@@ -1,0 +1,8 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=3
+NOT (DestinationPort IN (80,443,8080,8443,53,25,587,993,995,22,3389))
+NOT (Image IN ("*\\chrome.exe","*\\firefox.exe","*\\msedge.exe"))
+DestinationIsIpv6=false
+| eval mitre_technique="T1095", mitre_tactic="Command and Control", severity="medium"
+| table _time, host, Image, DestinationIp, DestinationPort, Protocol, mitre_technique, severity
+| sort -_time

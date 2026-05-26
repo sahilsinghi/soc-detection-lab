@@ -1,0 +1,5 @@
+index=main sourcetype="WinEventLog:System" EventCode=7045
+NOT (ServiceName="*Update*" OR ServiceName="*Defender*" OR ServiceName="*Windows*")
+| eval mitre_technique="T1543.003", mitre_tactic="Persistence", severity="high"
+| table _time, host, ServiceName, ServiceFileName, ServiceType, ServiceStartType, mitre_technique, severity
+| sort -_time

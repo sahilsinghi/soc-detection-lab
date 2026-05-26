@@ -1,0 +1,7 @@
+index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=11
+(TargetFilename="*.pst" OR TargetFilename="*.ost" OR TargetFilename="*.mbox")
+NOT (Image="*\\OUTLOOK.EXE" OR Image="*\\BackupService.exe")
+| eval mitre_technique="T1114.001", mitre_tactic="Collection", severity="high"
+| table _time, host, user, Image, TargetFilename, mitre_technique, severity
+| sort -_time
