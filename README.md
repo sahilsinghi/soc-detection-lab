@@ -9,12 +9,13 @@
 
 | Metric | Value |
 |--------|-------|
-| Detection Rules | 32 |
+| Detection Rules | 32 authored / 7 scheduled & validated end-to-end |
 | ATT&CK Tactics Covered | 12 |
-| Atomics Executed | 32 |
-| False Positives Documented | 3 |
-| SIEM | Splunk Enterprise (Free) + Wazuh |
-| Endpoints | Windows 10, Windows Server 2022 |
+| Techniques Validated Live (2026-05-27) | T1110.001, T1059.001, T1562.001 |
+| False Positives Tuned | T1003.001 (svchost→lsass 0x1000 status queries carved out) |
+| SIEMs | Splunk Enterprise Free + Wazuh 4.13.1 |
+| Wazuh Agents Active | 2 (macOS Apple Silicon host + Windows 11 ARM64 VM) |
+| Endpoints Monitored | Windows 11 ARM64 (Splunk UF + Wazuh agent), macOS (Wazuh agent) |
 
 ---
 
@@ -137,7 +138,7 @@ NOT (SourceImage="*\\MsMpEng.exe" OR SourceImage="*\\csrss.exe")
 
 See [`docs/one-detection-walkthrough.md`](docs/one-detection-walkthrough.md) for the full breakdown.
 
-For end-to-end validation evidence (T1110.001 brute force detected, T1003.001 false-positive tuning notes, pipeline health snapshot), see [`docs/validation-log.md`](docs/validation-log.md).
+For end-to-end validation evidence — T1110.001 brute force, T1059.001 encoded PowerShell, T1562.001 Defender-disable attempt, T1003.001 false-positive tuning, and pipeline health snapshot — see [`docs/validation-log.md`](docs/validation-log.md).
 
 For the secondary Wazuh SIEM setup (manager on Ubuntu ARM64, first agent on macOS host), see [`docs/wazuh-setup.md`](docs/wazuh-setup.md).
 
@@ -167,11 +168,21 @@ Sysmon EventCode breakdown and sourcetype distribution in the `soc-lab` index.
 
 ![Splunk Detection Query](screenshots/Screenshot%202026-05-26%20at%201.05.05%E2%80%AFPM.png)
 
+### Wazuh — Dual Agents Active
+Secondary SIEM running alongside Splunk. Both macOS host and Windows 11 ARM64 VM reporting as active to the Wazuh manager.
+
+![Wazuh dual agents active](screenshots/wazuh-dual-agents-active.png)
+
+### Wazuh — Rule 5401 Sudo Failure Detection
+First real alert on the Mac agent: 5 failed sudo attempts caught by Wazuh's built-in macOS decoder, surfaced in Threat Hunting within ~30s.
+
+![Wazuh rule 5401](screenshots/wazuh-rule-5401-sudo-failures.png)
+
 ---
 
 ## 📝 Resume Bullet
 
-> Built end-to-end SOC detection lab with Splunk + Sysmon-instrumented Windows endpoints; authored 30+ detection rules mapped to MITRE ATT&CK and validated each via Atomic Red Team simulations, achieving 75% coverage across 12 tactics and surfacing 3 false-positive scenarios resolved through rule tuning.
+> Built dual-SIEM SOC detection lab (Splunk + Wazuh) with Sysmon-instrumented Windows endpoints and macOS host; authored 30+ MITRE ATT&CK detection rules and validated key techniques (T1110.001 brute force, T1059.001 encoded PowerShell, T1562.001 Defender disable) end-to-end from atomic execution → log → SIEM → scheduled rule → alert. Diagnosed and tuned a high-volume LSASS access false positive (svchost status queries vs PROCESS_VM_READ), and remediated a stale-sourcetype bug across multiple saved searches that had been silently suppressing alerts.
 
 ---
 
