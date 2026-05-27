@@ -63,6 +63,52 @@ This is the kind of FP tuning a SOC analyst owns. Documented here as a known fol
 
 ---
 
+## T1059.001 — PowerShell Encoded Command (Validated 2026-05-27)
+
+### Attack
+On the Windows VM, executed a base64-encoded PowerShell payload:
+
+```powershell
+$e = "VwByAGkAdABlAC0ASABvAHMAdAAgACcAUwBPAEMALQBMAEEAQgAtAFQAMQAwADUAOQAtAFQARQBTAFQAJwA="
+powershell.exe -EncodedCommand $e
+```
+
+Decoded payload: `Write-Host 'SOC-LAB-T1059-TEST'` — benign, but matches the TTP signature attackers use to evade plaintext-string detection.
+
+### Telemetry captured
+- **Sourcetype:** `WinEventLog:Microsoft-Windows-Sysmon/Operational`
+- **EventCode:** 1 (process creation)
+- **Host:** WIN-G086Q4H1K5D
+- **CommandLine:** `"C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe" -EncodedCommand "VwByAGkAdABl..."`
+
+### Scheduled rule outcome
+Manually dispatched `MITRE T1059.001 - PowerShell Encoded Command` immediately after the test. Job returned **10 results** — the test payload plus surrounding ambient encoded-command activity (PowerShell modules use `-EncodedCommand` internally for splatting, so this rule will need ambient-noise tuning later, similar to T1003.001).
+
+---
+
+## T1562.001 — Disable Windows Defender (Validated 2026-05-27)
+
+### Attack
+Custom simulator (no upstream Atomic Red Team coverage for T1562 — see lesson #5 below):
+
+```powershell
+$c = "Set-MpPreference -DisableRealtimeMonitoring $true -ErrorAction SilentlyContinue"
+powershell.exe -Command $c
+```
+
+Tamper Protection blocks the actual config change. That's fine — the detection target is the *attempt*, not the outcome. Sysmon EID 1 still fires for the `powershell.exe -Command Set-MpPreference ...` process creation.
+
+### Telemetry captured
+- **Sourcetype:** `WinEventLog:Microsoft-Windows-Sysmon/Operational`
+- **EventCode:** 1
+- **Host:** WIN-G086Q4H1K5D
+- **CommandLine:** `"C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe" -Command "Set-MpPreference -DisableRealtimeMonitoring True -ErrorAction SilentlyContinue"`
+
+### Scheduled rule outcome
+Saved search `MITRE T1562.001 - Disable Windows Defender` originally had the legacy `sourcetype="XmlWinEventLog*"` and a `process` field that doesn't exist on the new sourcetype — same root cause as the T1003.001 stale-sourcetype bug. Patched via REST to use `WinEventLog:Microsoft-Windows-Sysmon/Operational` + the `CommandLine` field, then re-dispatched. **1 hit returned**, exactly matching the test command. Repo `rule.spl` synced.
+
+---
+
 ## Pipeline State Confirmed Healthy (2026-05-27)
 
 | Sourcetype | Events / 10 min |
@@ -87,4 +133,4 @@ These hit us in this session — keeping them here so future-me doesn't re-disco
 
 4. **Audit policy was not capturing 4625 events out of the box.** Enabled with `auditpol /set /subcategory:"Logon" /failure:enable /success:enable` before T1110 produced anything Splunk could see.
 
-5. **Atomic test definitions for T1562.001 weren't downloaded** with the default Atomic Red Team install — likely got filtered by Defender at pull time. Pivoted to T1110.001 instead.
+5. **T1562.001 has no Atomic Red Team coverage upstream.** Initial assumption was Defender filtered the YAML at pull time — wrong. The `atomics/` directory in `redcanaryco/atomic-red-team@master` jumps T1560 → T1563. No T1562, T1562.001, or any T1562.xxx folders exist. Verified via the GitHub Contents API. So the "Disable Defender" TTP needs a custom simulator (e.g., `Set-MpPreference -DisableRealtimeMonitoring $true` driven via a local PS1) rather than an atomic. On a hardened endpoint Tamper Protection blocks this call entirely, so even the custom simulator only works with TP off or AuditMode set on the relevant ASR rule. **The detection rule itself is still valid** — it watches for Sysmon EID 1 with `CommandLine="*Set-MpPreference*"` and a `Disable*` flag, which fires regardless of whether the call succeeded.
