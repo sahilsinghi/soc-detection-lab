@@ -137,6 +137,8 @@ NOT (SourceImage="*\\MsMpEng.exe" OR SourceImage="*\\csrss.exe")
 
 See [`docs/one-detection-walkthrough.md`](docs/one-detection-walkthrough.md) for the full breakdown.
 
+For end-to-end validation evidence (T1110.001 brute force detected, T1003.001 false-positive tuning notes, pipeline health snapshot), see [`docs/validation-log.md`](docs/validation-log.md).
+
 ---
 
 ## 📸 Screenshots
