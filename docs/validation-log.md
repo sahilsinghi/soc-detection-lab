@@ -59,6 +59,8 @@ Add a clause to drop status-only svchost queries:
 
 This is the kind of FP tuning a SOC analyst owns. Documented here as a known follow-up.
 
+**Applied 2026-05-27:** Patched the saved search via Splunk REST (`POST /servicesNS/admin/search/saved/searches/MITRE%20T1003.001%20-%20LSASS%20Memory%20Dump`) to add `NOT (SourceImage="*svchost.exe" AND GrantedAccess="0x1000")`. Repo rule file (`detections/credential-access/T1003.001__lsass-memory-dump/rule.spl`) updated to match.
+
 ---
 
 ## Pipeline State Confirmed Healthy (2026-05-27)

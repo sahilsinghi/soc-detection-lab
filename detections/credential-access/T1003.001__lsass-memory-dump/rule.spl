@@ -1,9 +1,9 @@
-index=main sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"
-EventCode=10 TargetImage="*\\lsass.exe"
-NOT (SourceImage="*\\MsMpEng.exe"
-  OR SourceImage="*\\csrss.exe"
-  OR SourceImage="*\\wininit.exe"
-  OR SourceImage="*\\svchost.exe")
+index=soc-lab sourcetype="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+EventCode=10 TargetImage="*lsass.exe"
+NOT (SourceImage="*MsMpEng.exe"
+  OR SourceImage="*csrss.exe"
+  OR SourceImage="*wininit.exe")
+NOT (SourceImage="*svchost.exe" AND GrantedAccess="0x1000")
 | eval mitre_technique="T1003.001", mitre_tactic="Credential Access", severity="critical"
 | table _time, host, SourceImage, TargetImage, GrantedAccess, CallTrace, mitre_technique, severity
 | sort -_time
