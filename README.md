@@ -139,6 +139,8 @@ See [`docs/one-detection-walkthrough.md`](docs/one-detection-walkthrough.md) for
 
 For end-to-end validation evidence (T1110.001 brute force detected, T1003.001 false-positive tuning notes, pipeline health snapshot), see [`docs/validation-log.md`](docs/validation-log.md).
 
+For the secondary Wazuh SIEM setup (manager on Ubuntu ARM64, first agent on macOS host), see [`docs/wazuh-setup.md`](docs/wazuh-setup.md).
+
 ---
 
 ## 📸 Screenshots
