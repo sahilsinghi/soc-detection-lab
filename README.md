@@ -9,9 +9,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Detection Rules | 32 authored / 7 scheduled & validated end-to-end |
+| Detection Rules | 32 authored / 7 scheduled / 6 validated end-to-end |
 | ATT&CK Tactics Covered | 12 |
-| Techniques Validated Live (2026-05-27) | T1110.001, T1059.001, T1562.001 |
+| Techniques Validated Live (2026-05-27) | T1110.001, T1059.001, T1562.001, T1136.001, T1547.001, T1021.002 |
 | False Positives Tuned | T1003.001 (svchost→lsass 0x1000 status queries carved out) |
 | SIEMs | Splunk Enterprise Free + Wazuh 4.13.1 |
 | Wazuh Agents Active | 2 (macOS Apple Silicon host + Windows 11 ARM64 VM) |

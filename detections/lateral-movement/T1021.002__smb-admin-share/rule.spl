@@ -1,9 +1,13 @@
-index=main sourcetype="WinEventLog:Security"
-EventCode=5140
-ShareName IN ("\\\\*\\ADMIN$", "\\\\*\\C$", "\\\\*\\IPC$")
-NOT (SubjectUserName="*$")
+index=soc-lab
+(
+  (sourcetype="WinEventLog:Security" EventCode=5140
+    (ShareName="\\\\*\\ADMIN$" OR ShareName="\\\\*\\C$" OR ShareName="\\\\*\\IPC$")
+    NOT (SubjectUserName="*$"))
+  OR
+  (sourcetype="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1
+    Image="*\\net.exe"
+    (CommandLine="*\\\\*\\C$*" OR CommandLine="*\\\\*\\ADMIN$*"))
+)
 | eval mitre_technique="T1021.002", mitre_tactic="Lateral Movement", severity="high"
-| stats count by _time, host, SubjectUserName, SubjectDomainName, IpAddress, ShareName
-| where count > 0
-| eval mitre_technique="T1021.002"
+| table _time, host, EventCode, CommandLine, ShareName, SubjectUserName, IpAddress, mitre_technique
 | sort -_time

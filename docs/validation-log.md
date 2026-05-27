@@ -109,6 +109,55 @@ Saved search `MITRE T1562.001 - Disable Windows Defender` originally had the leg
 
 ---
 
+## T1136.001 — Local Account Creation (Validated 2026-05-27)
+
+### Attack
+`net user soclab-test Test@1234 /add` on the Windows VM.
+
+### Telemetry
+- **Sourcetype:** `WinEventLog:Security`
+- **EventCode:** 4720 (A user account was created)
+- **Time:** 16:05:31 IST
+
+### Outcome
+Saved search `MITRE T1136.001 - Local Account Creation` → **1 hit**.
+
+---
+
+## T1547.001 — Registry Run Key Persistence (Validated 2026-05-27)
+
+### Attack
+`reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v soclab /d "C:\Windows\System32\calc.exe" /f`
+
+### Telemetry
+- **Sourcetype:** `WinEventLog:Microsoft-Windows-Sysmon/Operational`
+- **EventCode:** 13 (Registry value set)
+- **TargetObject:** `HKU\...\Software\Microsoft\Windows\CurrentVersion\Run\soclab`
+- **Details:** `C:\Windows\System32\calc.exe`
+
+### Outcome
+Saved search `MITRE T1547.001 - Registry Run Key Persistence` → **2 hits** (the Run key write + a related RunNotification write).
+
+---
+
+## T1021.002 — SMB Admin Share Access (Validated 2026-05-27)
+
+### Attack
+`net use \\127.0.0.1\C$ /user:soclab-test Test@1234` (returned Access Denied — irrelevant; the *attempt* is the detection target).
+
+### Telemetry
+- **Sourcetype:** `WinEventLog:Microsoft-Windows-Sysmon/Operational`
+- **EventCode:** 1 (process creation)
+- **CommandLine:** `"C:\WINDOWS\system32\net.exe" use \\127.0.0.1\C$ /user:soclab-test Test@1234`
+
+### Rule tuning applied
+Original rule only looked for Security EID 5140 (file-share-access audit). That requires "Audit File Share" policy enabled, which isn't on by default. Patched the saved search to **also** match Sysmon EID 1 with `net.exe` and an admin-share CommandLine pattern, so the rule catches the attack regardless of audit policy state. Repo `rule.spl` synced.
+
+### Outcome
+Saved search `MITRE T1021.002 - SMB Admin Share Access` (post-patch) → **1 hit**.
+
+---
+
 ## Pipeline State Confirmed Healthy (2026-05-27)
 
 | Sourcetype | Events / 10 min |
