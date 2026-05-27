@@ -12,7 +12,7 @@ Second SIEM running alongside Splunk for dual-stack detection coverage. Wazuh Ma
 | Manager host | Ubuntu Server 24.04 ARM64 in UTM, IP `192.168.64.40` |
 | Resources | 2 vCPU, 4 GB RAM, 15 GB disk |
 | Dashboard URL | `https://192.168.64.40` (self-signed TLS) |
-| First agent | macOS 26.5 (Apple Silicon) — host machine |
+| Agents | macOS 26.5 (Apple Silicon) host + Windows 11 Home ARM64 VM (dual-stack with Splunk UF) |
 
 ---
 
@@ -83,6 +83,27 @@ Wazuh manager generated 5× **rule 5401 — "Failed attempt to run sudo"** (leve
 ![Wazuh rule 5401 sudo failures](../screenshots/wazuh-rule-5401-sudo-failures.png)
 
 End-to-end agent → manager → indexer → dashboard path confirmed working.
+
+---
+
+## Second agent: Windows 11 ARM64
+
+Same VM that runs Splunk Universal Forwarder — dual-stack coverage so the same Sysmon/Security events feed both SIEMs in parallel.
+
+Install (PowerShell as admin):
+
+```powershell
+$u = "https://packages.wazuh.com/4.x/windows/wazuh-agent-4.13.1-1.msi"
+iwr $u -OutFile C:\w.msi -UseBasicParsing
+msiexec.exe /i C:\w.msi /q WAZUH_MANAGER="192.168.64.40" WAZUH_AGENT_NAME="hamza-win"
+Start-Service WazuhSvc
+```
+
+Wazuh ships an x64 MSI only — runs fine on Win11 ARM64 via the OS's built-in x64 emulation. Note: PowerShell's default 80-column terminal in UTM truncates long pasted commands; assigning the URL to a variable first sidesteps that.
+
+Agent registered as ID 002, active within ~15s. Endpoints panel now shows both Mac and Windows hosts.
+
+![Wazuh dual agents active](../screenshots/wazuh-dual-agents-active.png)
 
 ---
 
