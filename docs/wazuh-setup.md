@@ -70,6 +70,22 @@ Dashboard → **Endpoints** → agent shows as `active` within ~15s.
 
 ---
 
+## Validation — first real alerts (2026-05-27)
+
+Triggered 5 failed `sudo` attempts on the Mac:
+
+```bash
+sudo -k && for i in 1 2 3 4 5; do echo "wrongpass" | sudo -S whoami 2>&1 | head -1; done
+```
+
+Wazuh manager generated 5× **rule 5401 — "Failed attempt to run sudo"** (level 5), plus an incidental **rule 533 — "Listened ports status (netstat) changed"** from syscollector. All 6 hits surfaced in **Threat Hunting → Events** within ~30s.
+
+![Wazuh rule 5401 sudo failures](../screenshots/wazuh-rule-5401-sudo-failures.png)
+
+End-to-end agent → manager → indexer → dashboard path confirmed working.
+
+---
+
 ## What this adds to the lab
 
 | Capability | Splunk side | Wazuh side |
