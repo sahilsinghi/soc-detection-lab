@@ -1,2 +1,3 @@
 *.spl linguist-language=YAML
 *.spl linguist-detectable=true
+*.conf linguist-language=YAML
